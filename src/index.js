@@ -16,6 +16,51 @@ document.addEventListener('DOMContentLoaded', function () {
   //////////////////////////////
   //Global Variables
 
+  const updateGeoFilters = function () {
+    // Webflow is initialized
+    // Selectors for primary items
+    const WORK_ITEMS = document.querySelectorAll('.portfolio_item');
+
+    // Get each work item and create individual tags from the tag text
+    WORK_ITEMS.forEach((workItem) => {
+      const tagEl = workItem.querySelector('[cr-filter-tag]');
+      if (!tagEl) return;
+      const tagText = tagEl.textContent;
+      const tagArray = tagText.split(',');
+      tagArray.forEach((tag) => {
+        tagEl.insertAdjacentHTML(
+          'afterend',
+          `<div class=hide fs-cmsfilter-field="geography">${tag}</div>`
+        );
+      });
+      // tagEl.remove();
+      //progromatically resstart CMS filters
+    });
+
+    // create the filters instance
+    // window.fsAttributes = window.fsAttributes || [];
+    // window.fsAttributes.push([
+    //   'cmsfilter',
+    //   (filterInstances) => {
+    //     console.log('cmsfilter Successfully loaded!');
+
+    //     // The callback passes a `filterInstances` array with all the `CMSFilters` instances on the page.
+    // 		// this line will get the first instance from the array and save it in a variable called filterInstance
+    //     const [filterInstance] = filterInstances;
+
+    //     // The `renderitems` event runs whenever the list renders items after filtering.
+    //     filterInstance.listInstance.on('renderitems', (renderedItems) => {
+    //       console.log(renderedItems);
+    //     });
+
+    // 		// method to apply the filters
+    // 		filterInstance.applyFilters();
+    //   },
+    // ]);
+
+    //     window.fsAttributes.destroy();
+    //     window.fsAttributes.init();
+  };
   //////////////////////////////
   //Control Functions on page load
   const gsapInit = function () {
@@ -30,11 +75,13 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       (gsapContext) => {
         let { isMobile, isTablet, isDesktop, reduceMotion } = gsapContext.conditions;
+
+        updateGeoFilters();
         //functional interactions
-        hoverActive(gsapContext);
+        // hoverActive(gsapContext);
         //conditional interactions
         if (!reduceMotion) {
-          scrollIn(gsapContext);
+          // scrollIn(gsapContext);
         }
       }
     );
