@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
       tagArray.forEach((tag) => {
         tagEl.insertAdjacentHTML(
           'afterend',
-          `<div class=hide fs-cmsfilter-field="geography">${tag}</div>`
+          `<div class=hide fs-list-field="geography">${tag}</div>`
         );
       });
       // tagEl.remove();
