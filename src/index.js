@@ -1,6 +1,8 @@
 import { attr } from './utilities';
 import { hoverActive } from './interactions/hover-active';
+import { clickActive } from './interactions/click-active';
 import { scrollIn } from './interactions/scroll-in';
+import { accordion } from './interactions/accordion';
 import { marquee } from './interactions/marquee';
 import { countUp } from './interactions/count-up';
 
