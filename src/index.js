@@ -1,6 +1,8 @@
 import { attr } from './utilities';
 import { hoverActive } from './interactions/hover-active';
 import { scrollIn } from './interactions/scroll-in';
+import { marquee } from './interactions/marquee';
+import { countUp } from './interactions/count-up';
 
 document.addEventListener('DOMContentLoaded', function () {
   // Comment out for production
@@ -19,18 +21,19 @@ document.addEventListener('DOMContentLoaded', function () {
   const updateGeoFilters = function () {
     // Webflow is initialized
     // Selectors for primary items
-    const WORK_ITEMS = document.querySelectorAll('.portfolio_item');
+    const TAG_SPLITS = '[cr-filter-tag]';
+    const tags = document.querySelectorAll(TAG_SPLITS);
 
     // Get each work item and create individual tags from the tag text
-    WORK_ITEMS.forEach((workItem) => {
-      const tagEl = workItem.querySelector('[cr-filter-tag]');
-      if (!tagEl) return;
+    tags.forEach((item) => {
+      if (!item) return;
+      const className = attr('g_tag_wrap', item.getAttribute('cr-filter-tag'));
       const tagText = tagEl.textContent;
       const tagArray = tagText.split(',');
       tagArray.forEach((tag) => {
         tagEl.insertAdjacentHTML(
           'afterend',
-          `<div class=hide fs-list-field="geography">${tag}</div>`
+          `<div class=${className} fs-list-field="geography">${tag}</div>`
         );
       });
       // tagEl.remove();
@@ -77,6 +80,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let { isMobile, isTablet, isDesktop, reduceMotion } = gsapContext.conditions;
 
         updateGeoFilters();
+        accordion(gsapContext);
+        clickActive(gsapContext);
+        hoverActive(gsapContext);
+        countUp(gsapContext);
+        marquee(gsapContext);
         //functional interactions
         // hoverActive(gsapContext);
         //conditional interactions

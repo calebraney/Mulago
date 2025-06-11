@@ -5,7 +5,7 @@ export const hoverActive = function (gsapContext) {
   const ANIMATION_ID = 'hoveractive';
   //elements
   const WRAP = '[data-ix-hoveractive="wrap"]';
-  const ITEM = '[data-ix-hoveractive="item"]';
+  const TRIGGER = '[data-ix-hoveractive="trigger"]';
   const TARGET = '[data-ix-hoveractive="target"]'; //additional element to activate (needs matching values for the ID attribute)
   const ID = 'data-ix-hoveractive-id';
   //options
@@ -14,7 +14,7 @@ export const hoverActive = function (gsapContext) {
   const ACTIVE_CLASS = 'is-active';
 
   const hoverActiveList = function (listElement) {
-    const children = [...listElement.querySelectorAll(ITEM)];
+    const children = [...listElement.querySelectorAll(TRIGGER)];
 
     let activeClass = attr(ACTIVE_CLASS, listElement.getAttribute(OPTION_ACTIVE_CLASS));
     let keepActive = attr(false, listElement.getAttribute(OPTION_KEEP_ACTIVE));
@@ -22,6 +22,7 @@ export const hoverActive = function (gsapContext) {
     //helper function to activate or deactivate items
     function activateItem(item, activate = true) {
       let hasTarget = true;
+      activeClass = attr(activeClass, item.getAttribute(OPTION_ACTIVE_CLASS));
       const itemID = item.getAttribute(ID);
       const targetEl = listElement.querySelector(`${TARGET}[${ID}="${itemID}"]`);
       //if target or id isn't found set hasTarget to false

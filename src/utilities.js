@@ -1,5 +1,3 @@
-import SplitType from 'split-type';
-
 //utility function to stop the page from scrolling
 
 export const stopScroll = function (lenis) {
@@ -52,9 +50,7 @@ export const attrIfSet = function (item, attributeName, defaultValue) {
 //split text utility
 export const runSplit = function (text, types = 'lines, words') {
   if (!text) return;
-  typeSplit = new SplitType(text, {
-    types: types,
-  });
+  let typeSplit = SplitText.create(text, { type: types, autoSplit: true });
   return typeSplit;
 };
 
