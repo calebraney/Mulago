@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get each work item and create individual tags from the tag text
     tags.forEach((item) => {
       if (!item) return;
-      const className = attr(CLASS_DEFAULT, item.getAttribute('cr-filter-tag'));
+      const className = attr(CLASS_DEFAULT, item.getAttribute(TAGS));
       const tagText = item.textContent;
       const tagArray = tagText.split(',');
       tagArray.forEach((tag) => {
