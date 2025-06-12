@@ -21,24 +21,25 @@ document.addEventListener('DOMContentLoaded', function () {
   //Global Variables
 
   const updateGeoFilters = function () {
-    // Webflow is initialized
     // Selectors for primary items
-    const TAG_SPLITS = '[cr-filter-tag]';
-    const tags = document.querySelectorAll(TAG_SPLITS);
+    const TAGS = 'cr-filter-tag';
+    const CLASS_DEFAULT = 'filters_identifier';
+
+    const tags = document.querySelectorAll(`${TAGS}`);
 
     // Get each work item and create individual tags from the tag text
     tags.forEach((item) => {
       if (!item) return;
-      const className = attr('g_tag_wrap', item.getAttribute('cr-filter-tag'));
-      const tagText = tagEl.textContent;
+      const className = attr(CLASS_DEFAULT, item.getAttribute(TAGS));
+      const tagText = item.textContent;
       const tagArray = tagText.split(',');
       tagArray.forEach((tag) => {
-        tagEl.insertAdjacentHTML(
+        item.insertAdjacentHTML(
           'afterend',
           `<div class=${className} fs-list-field="geography">${tag}</div>`
         );
       });
-      // tagEl.remove();
+      item.remove();
       //progromatically resstart CMS filters
     });
 
@@ -66,6 +67,25 @@ document.addEventListener('DOMContentLoaded', function () {
     //     window.fsAttributes.destroy();
     //     window.fsAttributes.init();
   };
+
+  const updateGeoTags = function () {
+    // Selectors for primary items
+    const TAGS = 'data-tag-split';
+    const CLASS_DEFAULT = 'g_tag_wrap';
+    const tags = document.querySelectorAll(`${TAGS}`);
+
+    // Get each work item and create individual tags from the tag text
+    tags.forEach((item) => {
+      if (!item) return;
+      const className = attr(CLASS_DEFAULT, item.getAttribute('cr-filter-tag'));
+      const tagText = item.textContent;
+      const tagArray = tagText.split(',');
+      tagArray.forEach((tag) => {
+        item.insertAdjacentHTML('afterend', `<div class=${className}>${tag}</div>`);
+      });
+      item.remove();
+    });
+  };
   //////////////////////////////
   //Control Functions on page load
   const gsapInit = function () {
@@ -82,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let { isMobile, isTablet, isDesktop, reduceMotion } = gsapContext.conditions;
 
         updateGeoFilters();
+        updateGeoTags();
         accordion(gsapContext);
         clickActive(gsapContext);
         hoverActive(gsapContext);
