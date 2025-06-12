@@ -8,7 +8,7 @@ import { countUp } from './interactions/count-up';
 
 document.addEventListener('DOMContentLoaded', function () {
   // Comment out for production
-  console.log('Local Script');
+  // console.log('Local Script');
   // register gsap plugins if available
   if (gsap.ScrollTrigger !== undefined) {
     gsap.registerPlugin(ScrollTrigger);
@@ -22,50 +22,42 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const updateGeoFilters = function () {
     // Selectors for primary items
-    const TAGS = 'cr-filter-tag';
-    const CLASS_DEFAULT = 'filters_identifier';
+    const TAGS = 'data-tag-filter';
+    const IDENTIFIER = 'data-tag-filter-identifier';
 
-    const tags = document.querySelectorAll(`${TAGS}`);
+    const CLASS_DEFAULT = 'filters_identifier';
+    const FILTER_DEFAULT = 'geography';
+
+    const tags = [...document.querySelectorAll(`[${TAGS}]`)];
+    console.log(tags);
 
     // Get each work item and create individual tags from the tag text
     tags.forEach((item) => {
       if (!item) return;
       const className = attr(CLASS_DEFAULT, item.getAttribute(TAGS));
+      const filterIdentifier = attr(FILTER_DEFAULT, item.getAttribute(IDENTIFIER));
+
       const tagText = item.textContent;
       const tagArray = tagText.split(',');
       tagArray.forEach((tag) => {
+        const tagText = tag.trim();
+        console.log(tagText);
         item.insertAdjacentHTML(
           'afterend',
-          `<div class=${className} fs-list-field="geography">${tag}</div>`
+          `<div class=${className} fs-list-field="${filterIdentifier}">${tagText}</div>`
         );
       });
       item.remove();
-      //progromatically resstart CMS filters
     });
 
-    // create the filters instance
-    // window.fsAttributes = window.fsAttributes || [];
-    // window.fsAttributes.push([
-    //   'cmsfilter',
-    //   (filterInstances) => {
-    //     console.log('cmsfilter Successfully loaded!');
-
-    //     // The callback passes a `filterInstances` array with all the `CMSFilters` instances on the page.
-    // 		// this line will get the first instance from the array and save it in a variable called filterInstance
-    //     const [filterInstance] = filterInstances;
-
-    //     // The `renderitems` event runs whenever the list renders items after filtering.
-    //     filterInstance.listInstance.on('renderitems', (renderedItems) => {
-    //       console.log(renderedItems);
-    //     });
-
-    // 		// method to apply the filters
-    // 		filterInstance.applyFilters();
+    // progromatically resstart CMS filters
+    // window.FinsweetAttributes ||= [];
+    // window.FinsweetAttributes.push([
+    //   'list', // 'list', 'copyclip', 'modal', etc.
+    //   (result) => {
+    //     window.FinsweetAttributeControls.restart();
     //   },
     // ]);
-
-    //     window.fsAttributes.destroy();
-    //     window.fsAttributes.init();
   };
 
   const updateGeoTags = function () {
