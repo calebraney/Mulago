@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const tagArray = tagText.split(',');
       tagArray.forEach((tag) => {
         const tagText = tag.trim();
-        console.log(tagText);
         item.insertAdjacentHTML(
           'afterend',
           `<div class=${className} fs-list-field="${filterIdentifier}">${tagText}</div>`
@@ -51,11 +50,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // progromatically resstart CMS filters
+    // window.FinsweetAttributes.load('list');
     // window.FinsweetAttributes ||= [];
     // window.FinsweetAttributes.push([
     //   'list', // 'list', 'copyclip', 'modal', etc.
     //   (result) => {
-    //     window.FinsweetAttributeControls.restart();
+    //     // window.FinsweetAttributeControls.restart();
+    //     window.FinsweetAttributes.modules.list.restart();
     //   },
     // ]);
   };
