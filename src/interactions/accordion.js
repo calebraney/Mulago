@@ -98,7 +98,7 @@ export const accordion = function (gsapContext) {
           openAccordion(clickedItem, false);
         }
         // if the current item IS ACTIVE and keep one open is true check how many items are active
-        if (clickedItemAlreadyActive && keepOneActive) {
+        if (clickedItemAlreadyActive && keepOneOpen) {
           const activeItems = accordionItems.filter(function (item) {
             return item.classList.contains(activeClass);
           });
