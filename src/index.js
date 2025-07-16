@@ -79,6 +79,41 @@ document.addEventListener('DOMContentLoaded', function () {
       item.remove();
     });
   };
+  //formate numbers as currency
+  function formatNumbers() {
+    const ITEM = '[data-ix-formatnumber="item"]';
+    const FORMAT_WITH_LETTERS = 'data-ix-formatnumber-letters';
+
+    const items = document.querySelectorAll(ITEM);
+
+    items.forEach((item) => {
+      // remove any non number or period character from the string
+      let rawText = item.textContent.trim().replace(/[^0-9.]/g, '');
+      //convert to a number
+      let number = parseFloat(rawText);
+      // Exit early if not a valid number
+      if (isNaN(number)) return;
+      //check for format with letters option
+      const formatWithLetters = attr(false, item.getAttribute(FORMAT_WITH_LETTERS));
+
+      let formattedNumber;
+
+      if (formatWithLetters) {
+        if (number >= 1_000_000) {
+          formattedNumber = (number / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+        } else if (number >= 10_000) {
+          formattedNumber = (number / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+        } else {
+          formattedNumber = number.toLocaleString(); // fallback to comma formatting
+        }
+      } else {
+        formattedNumber = number.toLocaleString();
+      }
+
+      // Add dollar sign and replace text content
+      item.textContent = '$' + formattedNumber;
+    });
+  }
   //////////////////////////////
   //Control Functions on page load
   const gsapInit = function () {
@@ -96,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         updateGeoFilters();
         updateGeoTags();
+        formatNumbers();
         accordion(gsapContext);
         clickActive(gsapContext);
         hoverActive(gsapContext);
