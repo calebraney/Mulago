@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const FILTER_DEFAULT = 'geography';
 
     const tags = [...document.querySelectorAll(`[${TAGS}]`)];
-    console.log(tags);
 
     // Get each work item and create individual tags from the tag text
     tags.forEach((item) => {
@@ -61,29 +60,67 @@ document.addEventListener('DOMContentLoaded', function () {
     // ]);
   };
 
-  const updateGeoTags = function () {
+  const splitTags = function () {
     // Selectors for primary items
     const TAGS = 'data-tag-split';
+
+    // Defaults
+    const TAG_WRAP_CLASS_DEFAULT = 'g_tag_list';
     const CLASS_DEFAULT = 'g_tag_wrap';
-    const PAGE_TARGET_ATTR = 'data-tag-split-page';
     const PAGE_TARGET_DEFAULT = 'portfolio';
+    const FILTER_CATEGORY_DEFAULT = 'geography';
 
-    const tags = document.querySelectorAll(`${TAGS}`);
+    // Attribute names
+    const CLASS_ATTR = 'data-tag-split-class';
+    const PAGE_TARGET_ATTR = 'data-tag-split-page';
+    const FILTER_CATEGORY_ATTR = 'data-tag-split-category';
 
-    // Get each work item and create individual tags from the tag text
+    // Utility function to return fallback if null
+    const attr = (defaultVal, attrVal) => attrVal ?? defaultVal;
+
+    // Select elements
+    const tags = document.querySelectorAll(`[${TAGS}]`);
+
     tags.forEach((item) => {
       if (!item) return;
-      const className = attr(CLASS_DEFAULT, item.getAttribute(TAGS));
-      const pageTarget = attr(PAGE_TARGET_DEFAULT, item.getAttribute(TAGS));
 
-      const tagText = item.textContent;
-      const tagArray = tagText.split(',');
-      tagArray.forEach((tag) => {
-        item.insertAdjacentHTML('afterend', `<div class=${className}>${tag}</div>`);
+      const className = attr(CLASS_DEFAULT, item.getAttribute(CLASS_ATTR));
+      const pageTarget = attr(PAGE_TARGET_DEFAULT, item.getAttribute(PAGE_TARGET_ATTR));
+      const filterCategory = attr(FILTER_CATEGORY_DEFAULT, item.getAttribute(FILTER_CATEGORY_ATTR));
+
+      const fullTextString = item.textContent || '';
+      const itemTextArray = fullTextString.split(',');
+
+      // Create the wrapper element manually
+      const tagWrap = document.createElement('div');
+      tagWrap.className = TAG_WRAP_CLASS_DEFAULT;
+
+      // Insert the wrapper after the current item
+      item.parentNode.insertBefore(tagWrap, item.nextSibling);
+
+      itemTextArray.forEach((tag) => {
+        const tagText = tag.trim();
+        /*  
+        Different link format with the filters extra characters
+        const link = `/${pageTarget}?${encodeURIComponent(
+          filterCategory
+        )}_equal=%5B%22${encodeURIComponent(tagText)}%22%5D`; */
+        const link = `/${pageTarget}?${encodeURIComponent(
+          filterCategory
+        )}_equal=${encodeURIComponent(tagText)}`;
+        const anchor = document.createElement('a');
+        anchor.href = link;
+        anchor.target = '_blank';
+        anchor.className = className;
+        anchor.textContent = tagText;
+        tagWrap.appendChild(anchor);
       });
+
+      // Remove the original element
       item.remove();
     });
   };
+
   //formate numbers as currency
   function formatNumbers() {
     const ITEM = '[data-ix-formatnumber="item"]';
@@ -135,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let { isMobile, isTablet, isDesktop, reduceMotion } = gsapContext.conditions;
 
         updateGeoFilters();
-        updateGeoTags();
+        splitTags();
         formatNumbers();
         accordion(gsapContext);
         clickActive(gsapContext);
