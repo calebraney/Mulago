@@ -65,12 +65,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // Selectors for primary items
     const TAGS = 'data-tag-split';
     const CLASS_DEFAULT = 'g_tag_wrap';
+    const PAGE_TARGET_ATTR = 'data-tag-split-page';
+    const PAGE_TARGET_DEFAULT = 'portfolio';
+
     const tags = document.querySelectorAll(`${TAGS}`);
 
     // Get each work item and create individual tags from the tag text
     tags.forEach((item) => {
       if (!item) return;
       const className = attr(CLASS_DEFAULT, item.getAttribute(TAGS));
+      const pageTarget = attr(PAGE_TARGET_DEFAULT, item.getAttribute(TAGS));
+
       const tagText = item.textContent;
       const tagArray = tagText.split(',');
       tagArray.forEach((tag) => {
