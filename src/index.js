@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Exit early if not a valid number
       if (isNaN(number)) return;
       //check for format with letters option
-      const formatWithLetters = attr(false, item.getAttribute(FORMAT_WITH_LETTERS));
+      const formatWithLetters = attr(true, item.getAttribute(FORMAT_WITH_LETTERS));
 
       let formattedNumber;
 
