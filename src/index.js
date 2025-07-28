@@ -100,14 +100,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
       itemTextArray.forEach((tag) => {
         const tagText = tag.trim();
-        /*  
-        Different link format with the filters extra characters
-        const link = `/${pageTarget}?${encodeURIComponent(
+
+        // Different link format with the filters extra characters
+
+        let link = `/${pageTarget}?${encodeURIComponent(
           filterCategory
-        )}_equal=%5B%22${encodeURIComponent(tagText)}%22%5D`; */
-        const link = `/${pageTarget}?${encodeURIComponent(
-          filterCategory
-        )}_equal=${encodeURIComponent(tagText)}`;
+        )}_equal=%5B%22${encodeURIComponent(tagText)}%22%5D`;
+        //if filter is a radio button (sector) then use a different link style without additional characters
+        if (filterCategory === 'sector') {
+          link = `/${pageTarget}?${encodeURIComponent(filterCategory)}_equal=${encodeURIComponent(
+            tagText
+          )}`;
+        }
         const anchor = document.createElement('a');
         anchor.href = link;
         anchor.target = '_blank';
