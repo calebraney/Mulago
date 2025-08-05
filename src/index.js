@@ -145,8 +145,9 @@ document.addEventListener('DOMContentLoaded', function () {
       let formattedNumber;
 
       if (formatWithLetters) {
+        //if greater than 1 Million
         if (number >= 1_000_000) {
-          formattedNumber = (number / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+          formattedNumber = (number / 1_000_000).toFixed(2).replace(/\.?0+$/, '') + 'M';
         } else if (number >= 10_000) {
           formattedNumber = (number / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
         } else {
