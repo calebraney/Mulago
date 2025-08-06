@@ -19,7 +19,100 @@ document.addEventListener('DOMContentLoaded', function () {
 
   //////////////////////////////
   //Global Variables
+  const arrowAnimation = function () {
+    const wraps = [...document.querySelectorAll('[data-ix-chart="wrap"]')];
+    const LINE_1 = '[data-ix-chart="line-1"]';
+    const ARROW_1 = '[data-ix-chart="arrow-1"]';
+    const LINE_2 = '[data-ix-chart="line-2-mask"]';
+    const ARROW_2 = '[data-ix-chart="arrow-2"]';
+    const WORDS = '[data-ix-chart="word"]';
 
+    if (wraps.length === 0) return;
+    wraps.forEach((wrap) => {
+      const line1 = wrap.querySelector(LINE_1);
+      const arrow1 = wrap.querySelector(ARROW_1);
+      const line2 = wrap.querySelector(LINE_2);
+      const arrow2 = wrap.querySelector(ARROW_2);
+      const words = wrap.querySelector(WORDS);
+
+      //hide arrows
+      arrow1.style.opacity = 0;
+      arrow2.style.opacity = 0;
+      let tl = gsap.timeline({
+        defaults: {
+          duration: 2,
+          ease: 'power2.inOut',
+        },
+        scrollTrigger: {
+          trigger: wrap,
+          start: '70% 100%',
+          end: 'center 50%',
+          scrub: true,
+        },
+      });
+      tl.set(arrow1, { opacity: 1 }, '<');
+      tl.set(arrow2, { opacity: 1 }, '<');
+      tl.fromTo(
+        line1,
+        {
+          opacity: 0,
+          scale: 0.75,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          transformOrigin: 'center center',
+        }
+      );
+      tl.fromTo(
+        line1,
+        {
+          drawSVG: '0% 0%',
+        },
+        {
+          drawSVG: '100% 0%',
+        }
+      );
+      tl.to(
+        arrow1,
+        {
+          motionPath: {
+            path: '#chart-line-1',
+            align: '#chart-line-1',
+            alignOrigin: [0.5, 0.5],
+            autoRotate: 70,
+            start: 0,
+            end: 1,
+          },
+        },
+        '<'
+      );
+      tl.fromTo(
+        line2,
+        {
+          drawSVG: '0% 0%',
+        },
+        {
+          drawSVG: '100% 0%',
+        },
+        '<'
+      );
+      tl.to(
+        arrow2,
+        {
+          motionPath: {
+            path: '#chart-line-2',
+            align: '#chart-line-2',
+            alignOrigin: [0.5, 0.5],
+            autoRotate: true,
+            start: 0,
+            end: 1,
+          },
+        },
+        '<'
+      );
+    });
+  };
   const updateGeoFilters = function () {
     // Selectors for primary items
     const TAGS = 'data-tag-filter';
@@ -184,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function () {
         hoverActive(gsapContext);
         countUp(gsapContext);
         marquee(gsapContext);
+        arrowAnimation();
         //functional interactions
         // hoverActive(gsapContext);
         //conditional interactions
