@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const ARROW_1 = '[data-ix-chart="arrow-1"]';
     const LINE_2 = '[data-ix-chart="line-2-mask"]';
     const ARROW_2 = '[data-ix-chart="arrow-2"]';
-    const WORDS = '[data-ix-chart="word"]';
+    const WORDS = '[data-ix-chart="words"]';
 
     if (wraps.length === 0) return;
     wraps.forEach((wrap) => {
@@ -33,15 +33,15 @@ document.addEventListener('DOMContentLoaded', function () {
       const arrow1 = wrap.querySelector(ARROW_1);
       const line2 = wrap.querySelector(LINE_2);
       const arrow2 = wrap.querySelector(ARROW_2);
-      const words = wrap.querySelector(WORDS);
+      const words = wrap.querySelectorAll(WORDS);
 
       //hide arrows
       arrow1.style.opacity = 0;
       arrow2.style.opacity = 0;
       let tl = gsap.timeline({
         defaults: {
-          duration: 2,
-          ease: 'power2.inOut',
+          duration: 1,
+          ease: 'power1.inOut',
         },
         scrollTrigger: {
           trigger: wrap,
@@ -50,19 +50,17 @@ document.addEventListener('DOMContentLoaded', function () {
           scrub: true,
         },
       });
-      tl.set(arrow1, { opacity: 1 }, '<');
-      tl.set(arrow2, { opacity: 1 }, '<');
+
       tl.fromTo(
-        line1,
+        words,
         {
           opacity: 0,
-          scale: 0.75,
         },
         {
           opacity: 1,
-          scale: 1,
-          transformOrigin: 'center center',
-        }
+          duration: 0.5,
+        },
+        '<'
       );
       tl.fromTo(
         line1,
@@ -73,6 +71,8 @@ document.addEventListener('DOMContentLoaded', function () {
           drawSVG: '100% 0%',
         }
       );
+      tl.set(arrow1, { opacity: 1 }, '<');
+      tl.set(arrow2, { opacity: 1 }, '<');
       tl.to(
         arrow1,
         {
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alignOrigin: [0.5, 0.5],
             autoRotate: 70,
             start: 0,
-            end: 1,
+            end: 0.99,
           },
         },
         '<'
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
             align: '#chart-line-2',
             alignOrigin: [0.5, 0.5],
             autoRotate: true,
-            start: 0,
+            start: 0.01,
             end: 1,
           },
         },
